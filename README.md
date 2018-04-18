@@ -65,7 +65,7 @@ $widget = new \Remade\RaveWidget\Widget($configuration_values);
 
 ```
 
-For Laravel all these has already been taken care of. Just update your
+For Laravel, all these has already been taken care of. Just update your
 `rave.widget.php` file in Laravel's app config file. The widget instance 
 will be available as
 

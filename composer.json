@@ -8,9 +8,7 @@
     "require": {
         "guzzlehttp/guzzle": "^6.3",
         "catfan/medoo": "^1.5",
-        "illuminate/contracts": "~5.5.0|~5.6.0",
         "illuminate/support": "~5.5.0|~5.6.0",
-        "illuminate/config": "^5.6",
         "nesbot/carbon": "^1.26"
     },
     "autoload": {
@@ -27,5 +25,7 @@
                 "RaveWidget": "Remade\\RaveWidget\\Laravel\\RaveWidgetFacade"
             }
         }
-    }
+    },
+    "minimum-stability": "dev"
+
 }
