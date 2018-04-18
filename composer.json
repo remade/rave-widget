@@ -1,6 +1,6 @@
 {
     "name": "remade/rave-widget",
-    "description": "Rave Widget Manager",
+    "description": "A light-weight payment request library for Rave; for Laravel apps and composer aware PHP apps in general",
     "authors": [{
         "name": "remade",
         "email": "mail4remi@yahoo.com"
