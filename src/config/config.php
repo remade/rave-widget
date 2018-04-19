@@ -10,7 +10,7 @@ return [
     ],
 
     'widget' => [
-        'payment_request_table_name' =>  env('RAVE_WIDGET_REQUEST_TABLE', 'payment_request_table'),
+        'payment_request_table_name' =>  env('RAVE_WIDGET_REQUEST_TABLE', 'rave_payment_request'),
         'hash_key' => env('RAVE_WIDGET_HASH', ''),
     ],
 

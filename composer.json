@@ -8,8 +8,10 @@
     "require": {
         "guzzlehttp/guzzle": "^6.3",
         "catfan/medoo": "^1.5",
-        "illuminate/support": "~5.5.0|~5.6.0",
-        "nesbot/carbon": "^1.26"
+        "nesbot/carbon": "^1.26",
+        "cakephp/event": "dev-master",
+        "twig/twig": "^2.0",
+        "illuminate/support": "~5.5.0|~5.6.0"
     },
     "autoload": {
         "psr-4": {
