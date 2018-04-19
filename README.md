@@ -73,6 +73,41 @@ will be available as
 $widget = new RaveWidget();
 ```
 
+#### Setting Payments
+You can set your payment details on the payment object. This object is available via `$widget->payment()`
+```
+$wigdet->payment()->setEmail('mail4remi@yahoo.com')->setAmount(100)->setCurrency('NGN');
+```
+Available Methods are:
+```
+setAmount(decimal)
+setPaymentMethod(string)
+setDescription(string)
+setLogo(url)
+setTitle(string)
+setCountry(string)
+setCurrency(string)
+setEmail(email)
+setFirstname(string)
+setLastname(string)
+setPhoneNumber(string)
+setPayButtonText(string)
+setRedirectUrl(url)
+setMetaData(array)
+```
+All set property method have an equivalent get method e.g. `setAmount(amount)` and `getAmount()`
+
+#### Setting Configuration
+You can update configuration values at run time. The Configuration instance is available on Widget instance i.e
+`$widget->configuration()`
+
+#### Making Payment Request
+`$widget->makePaymentRequest($render)`
+Where `$render` is boolean. With `$render = true`, you get a web page with the Rave Modal loaded
+
+#### Verifying Payment
+`$widget->verifyTransacction($transactionRefrence)`
+
 ## Running the tests
 
 ```
