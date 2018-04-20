@@ -32,13 +32,13 @@ class RaveWidgetServiceProvider extends ServiceProvider {
      */
     protected function registerConfig()
     {
-        $userConfigFile    = $this->app->configPath().'/rave.widget.php';
+        $userConfigFile = $this->app->configPath().'/rave.widget.php';
         $packageConfigFile = __DIR__.'/../../config/config.php';
-        $config            = $this->app['files']->getRequire($packageConfigFile);
+        $config = $this->app['files']->getRequire($packageConfigFile);
 
         if (file_exists($userConfigFile)) {
             $userConfig = $this->app['files']->getRequire($userConfigFile);
-            $config     = array_replace_recursive($config, $userConfig);
+            $config = array_replace_recursive($config, $userConfig);
         }
 
         $this->app['config']->set('rave.widget', $config);
@@ -49,8 +49,8 @@ class RaveWidgetServiceProvider extends ServiceProvider {
      */
     protected function registerWidget()
     {
-        $this->app->singleton(Widget::class, function ($app) {
-            return new Widget(config('rave.widget'));
+        $this->app->bind('rave.widget', function ($app) {
+            return new Widget($app['config']->get('rave.widget'));
         });
     }
 
@@ -62,6 +62,11 @@ class RaveWidgetServiceProvider extends ServiceProvider {
     protected function isLumen()
     {
         return str_contains($this->app->version(), 'Lumen');
+    }
+
+    public function provides()
+    {
+        return ['rave.widget'];
     }
 
 }

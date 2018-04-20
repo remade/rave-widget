@@ -21,10 +21,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Remade\\RaveWidget\\Laravel\\RaveWidgetServiceProvider"
+                "Remade\\RaveWidget\\Laravel\\ServiceProvider"
             ],
             "aliases": {
-                "RaveWidget": "Remade\\RaveWidget\\Laravel\\RaveWidgetFacade"
+                "RaveWidget": "Remade\\RaveWidget\\Laravel\\Facades\\RaveWidget"
             }
         }
     },
