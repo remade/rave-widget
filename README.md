@@ -76,8 +76,8 @@ will be available as
 $widget = RaveWidget::instance();
 ```
 
-#### Setting Payments
-You can set your payment details on the payment object. This object is available via `$widget->payment()`
+#### Setting up Payments
+The payment details are set on the payment object. This object is available via `$widget->payment()`
 ```
 $wigdet->payment()->setEmail('mail4remi@yahoo.com')->setAmount(100)->setCurrency('NGN');
 ```
@@ -105,11 +105,16 @@ You can update configuration values at run time. The Configuration instance is a
 `$widget->configuration()`
 
 #### Making Payment Request
-`$widget->makePaymentRequest($render)`
-Where `$render` is boolean. With `$render = true`, you get a web page with the Rave Modal loaded
+```
+$widget = \RaveWidget::instance();
+$widget->payment()->setEmail('mail4remi@gmail.com')->setAmount(100)->setCurrency('NGN');
+$widget->makePaymentRequest($render)
+```
+Where `$render` is boolean with default value `true`. With `$render = true`, you get a web page with the Rave Modal loaded
 
 #### Verifying Payment
-`$widget->verifyTransaction($transactionRefrence)`
+`$transaction = RaveWidget::verifyTransaction($transactionReference)`
+This would be called typically on callback/webhook response.
 
 ## Running the tests
 

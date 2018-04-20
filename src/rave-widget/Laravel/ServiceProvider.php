@@ -21,10 +21,13 @@ class ServiceProvider extends IlluminateServiceProvider {
      */
     public function boot()
     {
-        // If you need to override the default config, copy config/config.php to /config/generators.config.php and update
         $this->publishes([
             __DIR__.'/../../config/config.php' => config_path('rave.widget.php'),
-        ]);
+        ], 'config');
+
+        $this->publishes([
+            __DIR__.'/../../database/migrations/' => database_path('migrations/'),
+        ], 'migrations');
     }
 
     /**
