@@ -2,10 +2,10 @@
 
 namespace Remade\RaveWidget\Laravel;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Remade\RaveWidget\Widget;
 
-class RaveWidgetServiceProvider extends ServiceProvider {
+class ServiceProvider extends IlluminateServiceProvider {
 
     /**
      * Register
