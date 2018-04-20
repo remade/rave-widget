@@ -49,6 +49,16 @@ class Widget
     }
 
     /**
+     * Return the Widget instance.
+     *
+     * @return $this
+     */
+    public function instance()
+    {
+        return $this;
+    }
+
+    /**
      * Retrieve present instance of widget's configuration
      *
      * @return Configuration
