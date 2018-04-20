@@ -23,6 +23,7 @@ Laravel >= 5.5.0
 ```
 composer require remade/rave-widget
 ```
+Afterwards, on Laravel, run `php artisan vendor:publish --provider=Remade\RaveWidget\Laravel\ServiceProvider`
 
 ### Usage
 Define your Configuration values:
@@ -48,8 +49,10 @@ $configuration_values = [
 ];
 ```
 
-Instantiate the Widget Object. It can be done in one of two ways. 
-There is no drawback irrespective of which way you choose.
+For Laravel apps, the configuration is already published to the app's config path in a `rave.widget.php` file. Edit as
+necessary.
+
+Instantiating the Widget Object can be done in one of two ways. There is no drawback irrespective of which way you choose.
 
 You can create a new instance of the Configuration class and use it to instantiate
 the Widget:
@@ -65,12 +68,12 @@ $widget = new \Remade\RaveWidget\Widget($configuration_values);
 
 ```
 
-For Laravel, all these has already been taken care of. Just update your
-`rave.widget.php` file in Laravel's app config file. The widget instance 
+For Laravel, all these has already been taken care of. After you must have updated
+`rave.widget.php` file in Laravel's app config path, the widget instance 
 will be available as
 
 ```
-$widget = new RaveWidget();
+$widget = RaveWidget::instance();
 ```
 
 #### Setting Payments
@@ -106,7 +109,7 @@ You can update configuration values at run time. The Configuration instance is a
 Where `$render` is boolean. With `$render = true`, you get a web page with the Rave Modal loaded
 
 #### Verifying Payment
-`$widget->verifyTransacction($transactionRefrence)`
+`$widget->verifyTransaction($transactionRefrence)`
 
 ## Running the tests
 

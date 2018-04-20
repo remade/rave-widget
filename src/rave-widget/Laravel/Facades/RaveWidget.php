@@ -1,6 +1,6 @@
 <?php
 
-namespace Remade\RaveWidget\Facades;
+namespace Remade\RaveWidget\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

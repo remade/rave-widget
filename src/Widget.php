@@ -59,16 +59,6 @@ class Widget
     }
 
     /**
-     * Retrieve present instance of widget's configuration
-     *
-     * @return Configuration
-     */
-    public function configuration()
-    {
-        return $this->configuration;
-    }
-
-    /**
      * @param array $payment_data
      * @return Payment
      * @throws \Exception
@@ -83,6 +73,52 @@ class Widget
         }
         return $this->payment;
     }
+
+
+    /**
+     * Retrieve present instance of widget's configuration
+     *
+     * @return Configuration
+     */
+    public function configuration()
+    {
+        return $this->configuration;
+    }
+
+    /**
+     * Return instance of Core Requests
+     *
+     * @return Requests
+     */
+    public function request()
+    {
+        $configuration = $this->configuration;
+
+        return new Requests(
+            $configuration->get('rave.environment'),
+            $configuration->get('rave.public_key'),
+            $configuration->get('rave.secret_key')
+        );
+    }
+
+    /**
+     * Return persistence instance
+     *
+     * @return Database
+     */
+    public function persistence()
+    {
+        $configuration = $this->configuration;
+
+        return new Database(
+            $configuration->get('database.database_type'),
+            $configuration->get('database.database_name'),
+            $configuration->get('database.server'),
+            $configuration->get('database.username'),
+            $configuration->get('database.password')
+        );
+    }
+
 
     /**
      * Make a payment request
@@ -212,39 +248,6 @@ class Widget
         return $this->request()->requeryTransaction($reference);
     }
 
-    /**
-     * Return instance of Core Requests
-     *
-     * @return Requests
-     */
-    public function request()
-    {
-        $configuration = $this->configuration;
-
-        return new Requests(
-            $configuration->get('rave.environment'),
-            $configuration->get('rave.public_key'),
-            $configuration->get('rave.secret_key')
-        );
-    }
-
-    /**
-     * Return persistence instance
-     *
-     * @return Database
-     */
-    public function persistence()
-    {
-        $configuration = $this->configuration;
-
-        return new Database(
-            $configuration->get('database.database_type'),
-            $configuration->get('database.database_name'),
-            $configuration->get('database.server'),
-            $configuration->get('database.username'),
-            $configuration->get('database.password')
-        );
-    }
 
     /**
      * Render payment page
