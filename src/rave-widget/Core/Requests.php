@@ -15,10 +15,11 @@ class Requests
     protected $environment;
 
     protected $endpoints = [
-        'live_base_url' => 'https://ravesandboxapi.flutterwave.com',
+        'live_base_url' => 'exix',
         'test_base_url' => 'https://ravesandboxapi.flutterwave.com',
 
         'transaction_verification' => 'flwv3-pug/getpaidx/api/xrequery',
+        'hosted_pay' => 'flwv3-pug/getpaidx/api/v2/hosted/pay',
     ];
 
     /**
@@ -59,13 +60,31 @@ class Requests
         $response = $this->client->post($this->endpoints['transaction_verification'], [
             'json' => [
                 'SECKEY' => $this->secretKey,
-                'tx_ref' => $reference
+                'txref' => $reference
             ],
             'headers' => [
                 'Content-Type' => 'application/json'
             ]
         ]);
 
-        return $response->getBody()->getContents();
+        return json_decode($response->getBody()->getContents());
+    }
+
+    /**
+     * Get link for hosted payment
+     *
+     * @param $payload
+     * @return string
+     */
+    public function hostedPay($payload)
+    {
+        $response = $this->client->post($this->endpoints['hosted_pay'], [
+            'json' => $payload,
+            'headers' => [
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+
+        return json_decode($response->getBody()->getContents());
     }
 }

@@ -26,6 +26,14 @@ class Widget
      */
     protected $payment;
 
+    /**
+     * Number of time to check transaction
+     *
+     * @var $requeryCount
+     */
+    protected $requeryCount;
+
+
 
     use EventDispatcherTrait;
 
@@ -123,7 +131,7 @@ class Widget
     /**
      * Make a payment request
      *
-     * @param bool $render
+     * @param string $render
      *
      * @return array
      *
@@ -132,7 +140,7 @@ class Widget
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function makePaymentRequest($render = true)
+    public function makePaymentRequest($render = 'self_host')
     {
         $payment = $this->payment();
 
@@ -145,8 +153,16 @@ class Widget
             "currency" => $payment->getCurrency(),
             "payment_method" => $payment->getPaymentMethod(),
             "txref" => $payment->getTransactionReference(),
-//            "meta" => [$payment->getMetaData()],
         ];
+
+        if(!empty($payment->getMetaData()))
+        {
+            $meta = [];
+            foreach ($payment->getMetaData() as $key=>$value){
+                $meta[] = (object) ['metaname' => $key, 'metavalue' =>$value];
+            }
+            $payment_properties['meta'] = json_encode($meta);
+        }
 
         $payment_properties = array_filter($payment_properties, function ($value){
             return !empty($value);
@@ -167,10 +183,19 @@ class Widget
         $this->getEventManager()->dispatch($event);
 
         //Return
-        if($render){
+        if($render == 'self_host'){
             echo $this->render([
                 'payload' => $payload
             ]);
+        }
+        else if($render == 'rave_host'){
+            $response = $this->request()->hostedPay($payment_properties);
+
+            if(!isset($response->data) || !isset($response->data->link)){
+                throw new \Exception('An error occurred while making a request to Rave');
+            }
+
+            header('Location: ' . $response->data->link);
         }
         else{
             //Return
@@ -189,48 +214,60 @@ class Widget
         //Get transaction
         $response = $this->request()->requeryTransaction($reference);
 
+        $this->requeryCount++;
+
         //Event
         $event = null;
 
-        if ($response->body && $response->body->status === "success") {
-            if($response->body && $response->body->data && $response->body->data->status === "successful"){
-                //Create Cancel event
-                $event = new Event('widget.cancel', $this, [
-                    'transaction_data' => $response
+        if ($response && $response->status == "success")
+        {
+            if($response && $response->data && $response->data->status == "successful")
+            {
+                //Create Success event
+                $event = new Event('widget.success', $this, [
+                    'reference' => $reference,
+                    'response' => $response,
+
                 ]);
-            }elseif($response->body && $response->body->data && $response->body->data->status === "failed"){
+            }
+            elseif($response && $response->data && $response->data->status == "failed")
+            {
                 //Create Cancel event
-                $event = new Event('widget.failure', $this, [
-                    'transaction_data' => $response
+                $event = new Event('widget.success', $this, [
+                    'response' => $response,
+                    'reference' => $reference,
                 ]);
-            }else{
+            }
+            else
+            {
                 // Handled an undecisive transaction. Probably timed out.
                 // I will requery again here. Just incase we have some devs that cannot setup a queue for requery. I don't like this.
-                if($this->requeryCount > 4){
+                if($this->requeryCount > 4)
+                {
                     // Now you have to setup a queue by force. We couldn't get a status in 5 requeries.
                     //Create Cancel event
                     $event = new Event('widget.timeout', $this, [
-                        'transaction_data' => $response
+                        'reference' => $reference,
                     ]);
-                }else{
+                }
+                else
+                {
                     sleep(3);
-                    $this->verifyTransaction($this->txref);
+                    $this->verifyTransaction($reference);
                 }
             }
-        }else{
+        }
+        else
+        {
             // Handle Requery Error
             $event = new Event('widget.failure', $this, [
-                'transaction_data' => $response
+                'response' => $response,
+                'reference' => $reference,
             ]);
         }
 
         //Dispatch event
         $this->getEventManager()->dispatch($event);
-
-        //save transaction response and update status
-        $this->persistence()->updateRavePaymentRequest($this->configuration->get('widget.payment_request_table_name'), [
-            'response_data' => $response
-        ],  $reference);
 
         //return transaction
         return $response;

@@ -66,11 +66,13 @@ class Database
      * @param $data
      * @param $reference
      */
-    public function updateRavePaymentRequest($table, $data, $reference)
+    public function updateRavePaymentRequest($table, $reference, $data)
     {
         $this->dbContextInstance->update($table, $data, [
             'reference' => $reference
         ]);
     }
+
+
 
 }

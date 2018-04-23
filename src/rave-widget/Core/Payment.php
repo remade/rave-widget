@@ -308,7 +308,7 @@ class Payment{
      * @return object
      * */
     function setMetaData($meta){
-        array_push($this->meta, $meta);
+        $this->meta = array_merge($this->meta, $meta);
         return $this;
     }
 

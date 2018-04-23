@@ -13,7 +13,11 @@
 
 <form method="POST" action="#" id="paymentForm">
     {% for item, value in payload.data %}
-        <input type="hidden" name="{{ item }}" value="{{ value }}" />
+    {% autoescape %}
+
+    <input type="hidden" name="{{ item }}" value='{{ value|raw }}' />
+    {% endautoescape %}
+
     {% endfor %}
 </form>
 
@@ -28,10 +32,18 @@
             payload[item.name] = item.value
         });
 
+        if (typeof payload.meta !== "undefined" && payload.meta != null)
+        {
+            payload.meta = $.parseJSON(payload.meta);
+        }
+
+
         //What happens when the payment modal is closed
         payload.onclose = function () {
 
         }
+
+        console.log(payload)
 
         //What happens when there is a callback response
         payload.callback = function () {

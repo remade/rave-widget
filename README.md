@@ -110,10 +110,10 @@ $widget = \RaveWidget::instance();
 $widget->payment()->setEmail('mail4remi@gmail.com')->setAmount(100)->setCurrency('NGN');
 $widget->makePaymentRequest($render)
 ```
-Where `$render` is boolean with default value `true`. With `$render = true`, you get a web page with the Rave Modal loaded
+Where `$render` is a string with default value `self_hosted`. Acceptable values are `self_hosted`, `rave_hosted` and `data`
 
 #### Verifying Payment
-`$transaction = RaveWidget::verifyTransaction($transactionReference)`
+`$transaction = $widget->verifyTransaction($transactionReference)`
 This would be called typically on callback/webhook response.
 
 ## Running the tests
