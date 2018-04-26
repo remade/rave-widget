@@ -138,7 +138,7 @@ class Widget
      */
     public function makePaymentRequest($render = 'rave_host')
     {
-        $payment = $this->payment();
+        $payment = $this->payment;
 
         //Create payload
         $payment_properties = [

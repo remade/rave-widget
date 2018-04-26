@@ -27,7 +27,7 @@ class Payment{
      * @param $data
      * @throws \Exception
      */
-    public function __construct($data)
+    public function __construct($data = [])
     {
         $this->set($data);
         $this->transactionReference = uniqid();
@@ -46,6 +46,13 @@ class Payment{
             throw new \Exception('Parameter provided must be an array of payment properties');
         }
 
+        foreach ($data as $key => $value)
+        {
+            if(property_exists($this, $key))
+            {
+                $this->{$key} = $value;
+            }
+        }
         return $this;
     }
 
