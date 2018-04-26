@@ -24,8 +24,8 @@ class EventHandler extends EventAbstract
             'amount' => $payment->getAmount(),
             'status_text' => 'waiting',
             'request_data' => json_encode($payload),
-            'created_at' => Carbon::now()->toDateTimeString(),
-            'updated_at' => Carbon::now()->toDateTimeString(),
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
         ];
 
         //Persist Request
@@ -45,7 +45,8 @@ class EventHandler extends EventAbstract
 
         $subject->persistence()->updateRavePaymentRequest($subject->configuration()->get('widget.payment_request_table_name'), $reference, [
             'status_text' => 'success',
-            'response_data' => json_encode($response)
+            'response_data' => json_encode($response),
+            'updated_at' => date('Y-m-d H:i:s'),
         ]);
     }
 
@@ -62,7 +63,8 @@ class EventHandler extends EventAbstract
 
         $subject->persistence()->updateRavePaymentRequest($subject->configuration()->get('widget.payment_request_table_name'), $reference, [
             'status_text' => 'failed',
-            'response_data' => json_encode($response)
+            'response_data' => json_encode($response),
+            'updated_at' => date('Y-m-d H:i:s'),
         ]);
     }
 
@@ -77,7 +79,8 @@ class EventHandler extends EventAbstract
         $reference = $event->getData('reference');
 
         $subject->persistence()->updateRavePaymentRequest($subject->configuration()->get('widget.payment_request_table_name'), $reference, [
-            'status_text' => 'timeout'
+            'status_text' => 'timeout',
+            'updated_at' => date('Y-m-d H:i:s'),
         ]);
     }
 
@@ -92,7 +95,8 @@ class EventHandler extends EventAbstract
         $reference = $event->getData('reference');
 
         $subject->persistence()->updateRavePaymentRequest($subject->configuration()->get('widget.payment_request_table_name'), $reference, [
-            'status_text' => 'cancelled'
+            'status_text' => 'cancelled',
+            'updated_at' => date('Y-m-d H:i:s'),
         ]);
     }
 }
