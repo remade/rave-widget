@@ -15,7 +15,7 @@ class EventHandler extends EventAbstract
     {
         $subject = $event->getSubject();
         $payment = $event->getData('payment');
-        $payload = $event->getData('payload');
+        $payload = $event->getData('payload_data');
 
         $insert = [
             'environment' => $subject->configuration()->get('rave.environment'),

@@ -133,14 +133,14 @@ class Widget
      *
      * @param string $render
      *
-     * @return array
+     * @return array|string
      *
      * @throws \Exception
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function makePaymentRequest($render = 'self_host')
+    public function makePaymentRequest($render = 'rave_host')
     {
         $payment = $this->payment();
 
@@ -184,11 +184,16 @@ class Widget
 
         //Return
         if($render == 'self_host'){
-            echo $this->render([
+            $html_string = $this->render([
                 'payload' => $payload
             ]);
+
+            $doc = new \DOMDocument();
+            $doc->loadHTML($html_string);
+            echo $doc->saveHTML();
+
         }
-        else if($render == 'rave_host'){
+        else{
             $response = $this->request()->hostedPay($payment_properties);
 
             if(!isset($response->data) || !isset($response->data->link)){
@@ -197,10 +202,7 @@ class Widget
 
             header('Location: ' . $response->data->link);
         }
-        else{
-            //Return
-            return $payload;
-        }
+
     }
 
     /**
