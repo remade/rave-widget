@@ -67,19 +67,15 @@ class Widget
     }
 
     /**
-     * @param array $payment_data
-     * @return Payment
-     * @throws \Exception
+     * Set Payment parameters for widget;
+     *
+     * @param Payment $payment
+     * @return $this
      */
-    public function payment($payment_data = [])
+    public function setPayment(Payment $payment)
     {
-        if(empty($this->payment)) {
-            $this->payment = new Payment($payment_data);
-        }
-        else{
-            $this->payment->set($payment_data);
-        }
-        return $this->payment;
+        $this->payment = $payment;
+        return $this;
     }
 
 
